@@ -1,6 +1,11 @@
 [build]
   publish = "pwa"
-  command = "echo 'No build needed - static PWA'"
+  command = "echo 'Deploying PWA - no build needed'"
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF ."
+
+# Ignore backend files
+[build.environment]
+  NODE_VERSION = "18"
 
 [[redirects]]
   from = "/*"
@@ -16,3 +21,10 @@
   for = "/manifest.json"
   [headers.values]
     Content-Type = "application/manifest+json"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+
