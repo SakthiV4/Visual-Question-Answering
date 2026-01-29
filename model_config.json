@@ -1,0 +1,117 @@
+{
+    "model_info": {
+        "name": "blip-vqa-visually-impaired",
+        "version": "1.0.0",
+        "base_model": "Salesforce/blip-vqa-base",
+        "framework": "pytorch",
+        "huggingface_url": "https://huggingface.co/Salesforce/blip-vqa-base",
+        "trained_date": "2022-05-15",
+        "deployed_date": "2026-01-29"
+    },
+    "architecture": {
+        "vision_encoder": "ViT-B/16",
+        "text_encoder": "BERT-base",
+        "decoder": "GPT-style autoregressive decoder",
+        "hidden_size": 768,
+        "num_attention_heads": 12,
+        "num_layers": 12,
+        "total_parameters": "384,672,572"
+    },
+    "training": {
+        "dataset": "VQA v2",
+        "dataset_size": {
+            "training_questions": 443757,
+            "validation_questions": 214354,
+            "training_images": 82783,
+            "validation_images": 40504
+        },
+        "pretrained_by": "Salesforce AI Research",
+        "training_duration": "Several days on GPU cluster",
+        "optimizer": "AdamW",
+        "learning_rate": 0.00001,
+        "batch_size": 512,
+        "epochs": 10
+    },
+    "performance": {
+        "vqa_v2_accuracy": 78.25,
+        "accuracy_by_type": {
+            "yes_no": 81.0,
+            "number": 54.0,
+            "other": 72.0
+        },
+        "target_accuracy": 80.0,
+        "model_size_mb": 1467,
+        "inference_time_ms": 500
+    },
+    "preprocessing": {
+        "image_size": [
+            384,
+            384
+        ],
+        "normalization": {
+            "mean": [
+                0.48145466,
+                0.4578275,
+                0.40821073
+            ],
+            "std": [
+                0.26862954,
+                0.26130258,
+                0.27577711
+            ]
+        },
+        "text_max_length": 35,
+        "answer_max_length": 10
+    },
+    "api_specification": {
+        "endpoint": "/vqa",
+        "method": "POST",
+        "input": {
+            "image": "base64 encoded string or file upload",
+            "question": "string (natural language question)"
+        },
+        "output": {
+            "answer": "string (generated answer)",
+            "confidence": "float (0-1)",
+            "processing_time_ms": "integer"
+        },
+        "example_request": {
+            "image": "data:image/jpeg;base64,/9j/4AAQSkZJRg...",
+            "question": "What color is this shirt?"
+        },
+        "example_response": {
+            "answer": "red and white",
+            "confidence": 0.92,
+            "processing_time_ms": 487
+        }
+    },
+    "use_cases": [
+        "expiry_date_reading",
+        "color_identification",
+        "object_recognition",
+        "text_reading",
+        "currency_identification",
+        "navigation_assistance",
+        "scene_understanding"
+    ],
+    "accessibility_features": {
+        "target_users": "Visually impaired individuals",
+        "voice_interface": true,
+        "hands_free_operation": true,
+        "text_to_speech": true,
+        "speech_to_text": true
+    },
+    "deployment": {
+        "platform": "Progressive Web App (PWA)",
+        "backend": "FastAPI (Python)",
+        "frontend": "HTML5 + JavaScript",
+        "gpu_required": true,
+        "min_vram_gb": 4,
+        "recommended_gpu": "NVIDIA RTX 4060 or better"
+    },
+    "project_alignment": {
+        "un_sdg_goal": "Goal 10: Reduced Inequalities",
+        "un_sdg_target": "10.2: Social Inclusion",
+        "societal_impact": "Empowering visually impaired individuals with AI-powered visual assistance"
+    }
+}

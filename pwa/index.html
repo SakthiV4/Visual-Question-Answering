@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="Visual Question Answering app for visually impaired users">
+    <meta name="theme-color" content="#1a1a2e">
+    <title>VQA Accessibility App</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icon-192.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Main App Container -->
+    <div id="app" role="application" aria-label="Visual Question Answering Application">
+
+        <!-- Header -->
+        <header role="banner">
+            <h1>VQA Assistant</h1>
+            <p class="subtitle">Ask questions about your surroundings</p>
+        </header>
+
+        <!-- Camera Preview (hidden from screen readers) -->
+        <div id="cameraContainer" aria-hidden="true">
+            <video id="camera" autoplay playsinline></video>
+            <canvas id="canvas" style="display: none;"></canvas>
+        </div>
+
+        <!-- Main Control Button -->
+        <div id="controls">
+            <button id="mainBtn" class="main-button" aria-label="Tap to capture photo and ask question">
+                <span id="btnText">Tap to Start</span>
+            </button>
+        </div>
+
+        <!-- Status Messages (announced to screen readers) -->
+        <div id="status" role="status" aria-live="polite" aria-atomic="true" class="status-message"></div>
+
+        <!-- Settings (optional) -->
+        <div id="settings" class="settings">
+            <button id="settingsBtn" aria-label="Settings" class="icon-button">
+                ⚙️
+            </button>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal" role="dialog" aria-labelledby="settingsTitle" hidden>
+        <div class="modal-content">
+            <h2 id="settingsTitle">Settings</h2>
+
+            <label for="speechRate">Speech Speed:</label>
+            <input type="range" id="speechRate" min="0.5" max="1.5" step="0.1" value="0.9"
+                aria-label="Adjust speech speed">
+
+            <label for="apiUrl">API URL:</label>
+            <input type="text" id="apiUrl" value="http://localhost:8000" aria-label="API server URL">
+
+            <button id="closeSettings" class="button">Close</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

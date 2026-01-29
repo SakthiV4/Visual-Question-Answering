@@ -1,0 +1,93 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyTorch
+*.pth
+*.pt
+checkpoints/
+models/checkpoints/
+models/final/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+outputs/logs/
+
+# Data (large files)
+data/raw/
+data/processed/
+*.json
+!model_config.json
+!pretrained_model_config.json
+!pwa/manifest.json
+
+# Large dataset files
+v2_OpenEnded_mscoco_train2014_questions.json
+v2_OpenEnded_mscoco_val2014_questions.json
+*.zip
+*.tar.gz
+
+# Cache
+.cache/
+.mypy_cache/
+.pytest_cache/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+temp/
+tmp/
+
+# Node modules (if any)
+node_modules/
+package-lock.json
+
+# Python type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+py.typed
