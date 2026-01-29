@@ -4,7 +4,9 @@
 
 // Configuration
 const CONFIG = {
-    apiUrl: 'http://localhost:8000',
+    // Use demo mode if backend not deployed
+    // Change this to your backend URL when deployed (e.g., Render, AWS, etc.)
+    apiUrl: 'DEMO_MODE', // Set to 'DEMO_MODE' for testing without backend
     speechRate: 0.9,
     autoCapture: false
 };
@@ -129,6 +131,30 @@ async function sendToAPI(imageBlob, question) {
     speak('Analyzing...');
 
     try {
+        // Demo mode for testing without backend
+        if (CONFIG.apiUrl === 'DEMO_MODE') {
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            // Generate demo response based on question
+            let answer = 'This is a demo response. ';
+            if (question.toLowerCase().includes('color')) {
+                answer += 'I can see various colors in the image.';
+            } else if (question.toLowerCase().includes('what')) {
+                answer += 'I can see an object in the image.';
+            } else {
+                answer += 'To get real answers, please deploy the backend API.';
+            }
+
+            updateStatus(`Answer: ${answer}`, 'success');
+            speak(answer);
+            vibrate([100, 50, 100]);
+            mainBtn.classList.remove('processing');
+            btnText.textContent = 'Tap to Start';
+            return;
+        }
+
+        // Real API call
         const formData = new FormData();
         formData.append('image', imageBlob, 'photo.jpg');
         formData.append('question', question);
