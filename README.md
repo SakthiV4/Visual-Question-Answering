@@ -345,3 +345,12 @@ This app empowers visually impaired individuals by:
 **Built with ❤️ for accessibility and inclusion**
 
 *Empowering visually impaired individuals with AI-powered visual assistance*
+
+ # #   C o d e R a b b i t   A I   C o d e   R e v i e w 
+ 
+ T h i s   p r o j e c t   u s e s   C o d e R a b b i t   f o r   a u t o m a t e d   c o d e   r e v i e w   t o   e n s u r e : 
+ -   A c c e s s i b i l i t y   c o m p l i a n c e   ( W C A G   2 . 1   L e v e l   A A ) 
+ -   S e c u r i t y   b e s t   p r a c t i c e s 
+ -   C o d e   q u a l i t y   a n d   m a i n t a i n a b i l i t y 
+  
+ 
