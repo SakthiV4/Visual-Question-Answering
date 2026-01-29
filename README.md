@@ -345,3 +345,5 @@ This app empowers visually impaired individuals by:
 **Built with ❤️ for accessibility and inclusion**
 
 *Empowering visually impaired individuals with AI-powered visual assistance*
+# #   C o d e R a b b i t   R e v i e w  
+ 
