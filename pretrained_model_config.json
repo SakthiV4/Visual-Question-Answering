@@ -1,0 +1,13 @@
+{
+    "model_name": "Salesforce/blip-vqa-base",
+    "model_type": "pretrained",
+    "training_status": "pretrained_on_vqa_v2",
+    "dataset": "VQA v2",
+    "training_samples": 443757,
+    "accuracy": "78-82%",
+    "no_training_required": true,
+    "ready_for_production": true,
+    "device": "cuda",
+    "created_date": "2026-01-29",
+    "notes": "Using pretrained BLIP-VQA model trained on VQA v2 dataset. No additional fine-tuning needed."
+}
