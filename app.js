@@ -6,7 +6,7 @@
 const CONFIG = {
     // Use demo mode if backend not deployed
     // Change this to your backend URL when deployed (e.g., Render, AWS, etc.)
-    apiUrl: 'DEMO_MODE', // Set to 'DEMO_MODE' for testing without backend
+    apiUrl: 'http://localhost:8000', // Backend API URL
     speechRate: 0.9,
     autoCapture: false
 };
