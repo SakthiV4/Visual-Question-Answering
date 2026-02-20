@@ -194,7 +194,15 @@ async function sendToAPI(imageBlob, question) {
 
         if (data.success) {
             updateStatus(`Answer: ${data.answer}`, 'success');
-            speak(data.answer);
+
+            // Speak answer + recommendation if exists (Post-Processing)
+            let speechText = data.answer;
+            if (data.recommendation) {
+                speechText += `. ${data.recommendation}`;
+                updateStatus(`Suggestion: ${data.recommendation}`, 'warning');
+            }
+
+            speak(speechText);
             vibrate([100, 50, 100]);
         } else {
             throw new Error('No answer received');
