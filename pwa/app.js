@@ -352,8 +352,15 @@ window.addEventListener('load', () => {
     const savedSpeechRate = localStorage.getItem('speechRate');
 
     if (savedApiUrl) {
-        CONFIG.apiUrl = savedApiUrl;
-        apiUrlInput.value = savedApiUrl;
+        // Migration: If saved URL is localhost, switch to production
+        if (savedApiUrl.includes('localhost') || savedApiUrl.includes('127.0.0.1')) {
+            localStorage.removeItem('apiUrl');
+            CONFIG.apiUrl = 'https://sakthi04-vqa-app.hf.space';
+            apiUrlInput.value = CONFIG.apiUrl;
+        } else {
+            CONFIG.apiUrl = savedApiUrl;
+            apiUrlInput.value = savedApiUrl;
+        }
     }
 
     if (savedSpeechRate) {
