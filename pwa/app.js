@@ -159,10 +159,32 @@ async function sendToAPI(imageBlob, question) {
         formData.append('image', imageBlob, 'photo.jpg');
         formData.append('question', question);
 
-        const response = await fetch(`${CONFIG.apiUrl}/api/vqa`, {
-            method: 'POST',
-            body: formData
-        });
+        let response;
+        try {
+            response = await fetch(`${CONFIG.apiUrl}/api/vqa`, {
+                method: 'POST',
+                body: formData
+            });
+        } catch (netError) {
+            // Auto-switch to production if localhost fails
+            if (CONFIG.apiUrl.includes('localhost') || CONFIG.apiUrl.includes('127.0.0.1')) {
+                console.log('Localhost failed, switching to production...');
+                updateStatus('Connect failed. Switching to Cloud...', 'warning');
+                speak('Local connection failed. Switching to cloud server.');
+
+                CONFIG.apiUrl = 'https://sakthi04-vqa-app.hf.space';
+                apiUrlInput.value = CONFIG.apiUrl;
+                localStorage.setItem('apiUrl', CONFIG.apiUrl);
+
+                // Retry immediately
+                response = await fetch(`${CONFIG.apiUrl}/api/vqa`, {
+                    method: 'POST',
+                    body: formData
+                });
+            } else {
+                throw netError;
+            }
+        }
 
         if (!response.ok) {
             throw new Error(`API error: ${response.status}`);
