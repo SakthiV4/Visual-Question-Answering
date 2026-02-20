@@ -6,7 +6,7 @@
 const CONFIG = {
     // Use demo mode if backend not deployed
     // Change this to your backend URL when deployed (e.g., Render, AWS, etc.)
-    apiUrl: 'http://localhost:8000', // Backend API URL
+    apiUrl: 'https://sakthi04-vqa-app.hf.space', // Backend API URL
     speechRate: 0.9,
     autoCapture: false
 };
