@@ -2,7 +2,7 @@
     "name": "VQA Accessibility Assistant",
     "short_name": "VQA Assistant",
     "description": "Visual Question Answering app for visually impaired users with voice input and output",
-    "start_url": "/",
+    "start_url": "./",
     "display": "standalone",
     "background_color": "#1a1a2e",
     "theme_color": "#667eea",
