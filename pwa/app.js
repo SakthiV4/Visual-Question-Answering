@@ -4,12 +4,16 @@
 
 // Configuration
 const CONFIG = {
-    // Use demo mode if backend not deployed
-    // Change this to your backend URL when deployed (e.g., Render, AWS, etc.)
-    apiUrl: 'https://sakthi04-vqa-app.hf.space', // Backend API URL
+    apiUrl: 'https://sakthi04-vqa-app.hf.space', // PRODUCTION: Hugging Face Space
     speechRate: 0.9,
     autoCapture: false
 };
+
+// Always clear any localhost saved from old sessions
+const _savedUrl = localStorage.getItem('apiUrl');
+if (!_savedUrl || _savedUrl.includes('localhost') || _savedUrl.includes('127.0.0.1')) {
+    localStorage.setItem('apiUrl', CONFIG.apiUrl);
+}
 
 // DOM Elements
 const camera = document.getElementById('camera');
@@ -47,7 +51,7 @@ async function startCamera() {
     try {
         stream = await navigator.mediaDevices.getUserMedia({
             video: {
-                facingMode: 'environment',
+                facingMode: { ideal: 'environment' },
                 width: { ideal: 1280 },
                 height: { ideal: 720 }
             }
@@ -62,13 +66,71 @@ async function startCamera() {
     }
 }
 
+// ============================================
+// Image Quality Analysis (Post-Processing)
+// ============================================
+
+function analyzeImageQuality() {
+    const context = canvas.getContext('2d');
+    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+    const pixels = imageData.data;
+
+    let totalBrightness = 0;
+    const pixelCount = pixels.length / 4;
+
+    for (let i = 0; i < pixels.length; i += 4) {
+        const brightness = 0.299 * pixels[i] + 0.587 * pixels[i + 1] + 0.114 * pixels[i + 2];
+        totalBrightness += brightness;
+    }
+
+    const avgBrightness = totalBrightness / pixelCount;
+
+    // Sharpness via pixel variance
+    let variance = 0;
+    for (let i = 0; i < pixels.length; i += 4) {
+        const brightness = 0.299 * pixels[i] + 0.587 * pixels[i + 1] + 0.114 * pixels[i + 2];
+        variance += Math.pow(brightness - avgBrightness, 2);
+    }
+    const sharpness = variance / pixelCount;
+
+    const suggestions = [];
+
+    if (avgBrightness < 40) {
+        suggestions.push('The image is very dark. Please turn on the light or flash.');
+    } else if (avgBrightness < 80) {
+        suggestions.push('Image is dim. Move to a brighter area or turn on flash.');
+    }
+
+    if (sharpness < 100) {
+        suggestions.push('Image appears blurry. Please hold the camera steady and get closer to the object.');
+    } else if (sharpness < 300) {
+        suggestions.push('Try holding the camera more steady for a clearer shot.');
+    }
+
+    if (avgBrightness > 220) {
+        suggestions.push('Image is too bright. Move away from direct light.');
+    }
+
+    return { avgBrightness, sharpness, suggestions };
+}
+
 function capturePhoto() {
     const context = canvas.getContext('2d');
     canvas.width = camera.videoWidth;
     canvas.height = camera.videoHeight;
     context.drawImage(camera, 0, 0);
 
-    // Convert to blob
+    // Analyze image quality before proceeding
+    const quality = analyzeImageQuality();
+
+    if (quality.suggestions.length > 0) {
+        const suggestionText = quality.suggestions.join(' ');
+        updateStatus(`📷 ${suggestionText}`, 'warning');
+        speak(suggestionText + ' Please try again.');
+        return; // Do not proceed — ask user to fix image first
+    }
+
+    // Image looks OK — proceed to question
     canvas.toBlob((blob) => {
         capturedImage = blob;
         vibrate(100);
@@ -133,10 +195,8 @@ async function sendToAPI(imageBlob, question) {
     try {
         // Demo mode for testing without backend
         if (CONFIG.apiUrl === 'DEMO_MODE') {
-            // Simulate API delay
             await new Promise(resolve => setTimeout(resolve, 1500));
 
-            // Generate demo response based on question
             let answer = 'This is a demo response. ';
             if (question.toLowerCase().includes('color')) {
                 answer += 'I can see various colors in the image.';
@@ -176,7 +236,6 @@ async function sendToAPI(imageBlob, question) {
                 apiUrlInput.value = CONFIG.apiUrl;
                 localStorage.setItem('apiUrl', CONFIG.apiUrl);
 
-                // Retry immediately
                 response = await fetch(`${CONFIG.apiUrl}/api/vqa`, {
                     method: 'POST',
                     body: formData
@@ -378,20 +437,11 @@ window.addEventListener('load', () => {
     startCamera();
 
     // Load saved settings
-    const savedApiUrl = localStorage.getItem('apiUrl');
     const savedSpeechRate = localStorage.getItem('speechRate');
 
-    if (savedApiUrl) {
-        // Migration: If saved URL is localhost, switch to production
-        if (savedApiUrl.includes('localhost') || savedApiUrl.includes('127.0.0.1')) {
-            localStorage.removeItem('apiUrl');
-            CONFIG.apiUrl = 'https://sakthi04-vqa-app.hf.space';
-            apiUrlInput.value = CONFIG.apiUrl;
-        } else {
-            CONFIG.apiUrl = savedApiUrl;
-            apiUrlInput.value = savedApiUrl;
-        }
-    }
+    // Always ensure production URL is used (never localhost)
+    CONFIG.apiUrl = 'https://sakthi04-vqa-app.hf.space';
+    apiUrlInput.value = CONFIG.apiUrl;
 
     if (savedSpeechRate) {
         CONFIG.speechRate = parseFloat(savedSpeechRate);

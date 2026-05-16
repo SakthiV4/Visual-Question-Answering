@@ -1,0 +1,32 @@
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.env
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Training Artifacts (Ignore these!)
+backend/model/checkpoints/
+model/checkpoints/
+runs/
+*.log
+*.pt
+!backend/model/model.safetensors
+!backend/model/config.json
+!backend/model/tokenizer.json
+!backend/model/tokenizer_config.json
+!backend/model/processor_config.json
+!backend/model/generation_config.json
+
+# Exclude model directory
+model/

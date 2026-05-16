@@ -29,6 +29,9 @@ wheels/
 checkpoints/
 models/checkpoints/
 models/final/
+models/
+model_backup/
+clean_backup/
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -55,6 +58,9 @@ outputs/logs/
 # Data (large files)
 data/raw/
 data/processed/
+data/guided/
+data/unguided/
+data/vqa_v2_subset/
 *.json
 !model_config.json
 !pretrained_model_config.json

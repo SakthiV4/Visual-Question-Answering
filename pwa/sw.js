@@ -3,7 +3,7 @@
 // Enables offline support and PWA installation
 // ============================================
 
-const CACHE_NAME = 'vqa-app-v1.0.2';
+const CACHE_NAME = 'vqa-app-v2.0.0';
 const RUNTIME_CACHE = 'vqa-runtime-v1';
 
 // Assets to cache on install

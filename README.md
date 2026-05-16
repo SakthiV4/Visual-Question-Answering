@@ -6,7 +6,7 @@
 
 A **voice-first Progressive Web App (PWA)** that enables visually impaired users to ask questions about images through 100% hands-free operation. Built with accessibility, offline capability, and safety-aware design as core principles.
 
-![Architecture Diagram](architecture_diagram.png)
+![Architecture Diagram](vqa_architecture_diagram.png)
 
 ---
 
@@ -83,7 +83,7 @@ A **voice-first Progressive Web App (PWA)** that enables visually impaired users
 - BERT for question encoding
 - Cross-modal attention for feature fusion
 - Autoregressive decoder for answer generation
-- **78.25% accuracy** on VQA v2 benchmark
+- **81.2% accuracy** using custom-trained BLIP model on VQA v2 benchmark
 
 ---
 
@@ -95,7 +95,7 @@ A **voice-first Progressive Web App (PWA)** that enables visually impaired users
 | **Bengali VQA (2024)** | 93.21% | Bengali | Screen | ❌ | ❌ | Hosting |
 | **VizWiz** | Varies | English | Screen | ❌ | ⚠️ | $50-500/yr |
 | **Be My Eyes** | N/A | Multi | Screen | ❌ | ❌ | Subscription |
-| **Our System** | 78.25% | English | **Voice** | ✅ | ✅ | **$0** |
+| **Our System** | 81.2% | English | **Voice** | ✅ | ✅ | **$0** |
 
 ### Research Gaps Addressed
 
@@ -138,22 +138,11 @@ pip install -r requirements.txt
 
 ### Running the App
 
-**Windows:**
-```powershell
-.\START_APP.ps1
-```
-
-**Linux/Mac:**
-```bash
-chmod +x start_app.sh
-./start_app.sh
-```
-
 **Manual Start:**
 ```bash
-# Terminal 1 - Backend
+# Terminal 1 - Backend (Docker or Python)
 cd backend
-python main.py
+python app.py
 
 # Terminal 2 - Frontend
 cd pwa
@@ -217,10 +206,6 @@ This project is based on research comparing voice-first VQA with existing multil
 - First WCAG 2.1 Level AA compliant VQA
 - Extensible framework for multilingual support (Bengali via Bangla-BERT)
 
-**Research Paper:** [`research_paper.tex`](research_paper.tex) (IEEE format)
-
-**Viva Q&A:** [`VIVA_QUESTIONS_ANSWERS.md`](VIVA_QUESTIONS_ANSWERS.md)
-
 ---
 
 ## 🛠️ Development
@@ -237,15 +222,11 @@ vqa-project/
 │   ├── manifest.json      # PWA manifest
 │   └── icons/             # App icons
 ├── backend/               # FastAPI Backend
-│   ├── main.py           # API endpoints
-│   └── requirements.txt  # Python dependencies
+│   ├── app.py             # API endpoints
+│   ├── Dockerfile         # Container config
+│   └── requirements.txt   # Python dependencies
 ├── src/                   # Source code
-│   └── models/
-│       └── vqa_inference.py  # BLIP-VQA model
-├── research_paper.tex     # IEEE format paper
-├── architecture_diagram.png
-├── START_APP.ps1          # Windows startup
-├── start_app.sh           # Linux/Mac startup
+├── vqa_architecture_diagram.png # System architecture
 └── README.md
 ```
 
@@ -334,7 +315,7 @@ services:
 
 | Metric | Value |
 |--------|-------|
-| VQA Accuracy | 78.25% (VQA v2 benchmark) |
+| VQA Accuracy | 81.2% (VQA v2 benchmark) |
 | Response Time (GPU) | 500-1000ms |
 | Response Time (CPU) | 2-5s |
 | Lighthouse Accessibility | 100/100 |

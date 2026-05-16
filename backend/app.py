@@ -27,14 +27,14 @@ app.add_middleware(
 MODEL_PATH = "model"  # Expect model in ./model directory
 BASE_MODEL = "sakthi04/vqa-model-finetuned"
 
-print("📥 Loading Model...")
+print("[INFO] Loading Model...")
 
 # Load from local folder if exists (for custom fine-tuned model)
 if os.path.exists(MODEL_PATH) and os.listdir(MODEL_PATH):
-    print(f"✅ Found local model at {MODEL_PATH}")
+    print(f"[INFO] Found local model at {MODEL_PATH}")
     load_path = MODEL_PATH
 else:
-    print(f"⚠️ Local model not found. Downloading {BASE_MODEL}...")
+    print(f"[WARN] Local model not found. Downloading {BASE_MODEL}...")
     load_path = BASE_MODEL
 
 try:
@@ -44,9 +44,9 @@ try:
     # Use CPU for Free Tier (or CUDA if available on Pro)
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model.to(device)
-    print(f"🚀 Model loaded on {device}")
+    print(f"[INFO] Model loaded on {device}")
 except Exception as e:
-    print(f"❌ Error loading model: {e}")
+    print(f"[ERROR] Error loading model: {e}")
     raise e
 
 @app.get("/")
@@ -102,11 +102,8 @@ async def answer_question(
             answer = processor.decode(sequences[0], skip_special_tokens=True)
             
             # approximate confidence
-            # if using greedy search, we can check scores (logits)
-            # simplistic approach: if scores available
             confidence = 1.0
             if hasattr(outputs, 'scores'):
-                # scores is a tuple of (batch_size, vocab_size) tensors
                 probs = [torch.softmax(step_scores, dim=-1).max().item() for step_scores in outputs.scores]
                 if probs:
                     confidence = sum(probs) / len(probs)

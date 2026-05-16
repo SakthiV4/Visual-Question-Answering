@@ -1,0 +1,12 @@
+Metric Name,What it Measures,How We Calculate It,Expected Result / Output
+1. Frame Quality Score (NR-IQA),The objective quality of the photo before the AI ever sees it,"Blur Penalty (Variance of Laplacian)
+Lighting Penalty (Brightness/Contrast limits)
+Framing Penalty (Subject centering)
+(Total: 100 - Penalties)","A score from 0 to 100.
+Real-time audio feedback to the user (e.g., 'Frame too blurry, hold steady')."
+2. VQA Accuracy Delta,How much your app's guidance actually improves the AI's success rate,"Runs the VQA model on Unguided (bad) vs Guided (good) photos.
+Checks if the AI's confidence is above the threshold (e.g., 80%) to count as 'Answerable'.","+X% Delta Improvement.
+Proves that filtering bad photos drastically reduces the AI's failure/hallucination rate."
+3. Usability & Efficiency (Timer & AUS),How fast and easy it is for a visually impaired user to operate the app,"Timer: Tracks seconds from opening the camera to hearing 'Good Frame Detected'.
+AUS: Automatically scores the standard 10-question Accessible Usability Scale.","Average Task Time (seconds).
+AUS Score (0 to 100, where >68 is considered highly usable)."
