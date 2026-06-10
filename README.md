@@ -375,41 +375,6 @@ CSE with AIML, SRM Institute of Science and Technology, Tiruchirappalli
 
 ---
 
-## 📞 Contact
-
-For questions, issues, or collaboration:
-- **GitHub Issues:** [Create an issue](https://github.com/SakthiV4/Visual-Question-Answering/issues)
-- **Email:** kesavaraja@example.com
-
----
-
-## 📚 Citations
-
-If you use this work in your research, please cite:
-
-```bibtex
-@misc{kesavaraja2025vqa,
-  title={Visual Question Answering for Visually Impaired: A Voice-First Progressive Web App Approach},
-  author={Kesavaraja, M. and Sakthi Prasath, V.},
-  year={2025},
-  institution={SRM Institute of Science and Technology}
-}
-```
-
-**Base Paper:**
-```bibtex
-@article{bhuyan2025bvqa,
-  title={BVQA: Connecting Language and Vision Through Multimodal Attention for Open-Ended Question Answering},
-  author={Bhuyan, M. S. M. and Hossain, E. and Sathi, K. A. and Hossain, M. A. and Dewan, M. A. A.},
-  journal={IEEE Access},
-  volume={13},
-  pages={1--15},
-  year={2025},
-  publisher={IEEE}
-}
-```
-
----
 
 <div align="center">
 
