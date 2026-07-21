@@ -4,61 +4,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="description" content="Visual Question Answering app for visually impaired users">
-    <meta name="theme-color" content="#1a1a2e">
-    <title>VQA Accessibility App</title>
+    <meta name="description" content="Visual Question Answering app – point your camera and ask questions about your surroundings.">
+    <meta name="theme-color" content="#0d0d1a">
+    <title>VQA Assistant – See the World with AI</title>
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icon-192.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <!-- Animated background blobs -->
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+    <div class="bg-blob blob-3"></div>
+
     <!-- Main App Container -->
     <div id="app" role="application" aria-label="Visual Question Answering Application">
 
         <!-- Header -->
         <header role="banner">
-            <h1>VQA Assistant</h1>
-            <p class="subtitle">Ask questions about your surroundings</p>
+            <div class="header-inner">
+                <div class="logo-badge">
+                    <span class="logo-icon">👁</span>
+                    <span class="logo-text">VQA</span>
+                </div>
+                <div class="header-text">
+                    <h1>Visual AI Assistant</h1>
+                    <p class="subtitle">Point · Capture · Ask · Understand</p>
+                </div>
+                <button id="settingsBtn" aria-label="Settings" class="icon-button" title="Settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                </button>
+            </div>
         </header>
 
-        <!-- Camera Preview (hidden from screen readers) -->
-        <div id="cameraContainer" aria-hidden="true">
-            <video id="camera" autoplay playsinline></video>
-            <canvas id="canvas" style="display: none;"></canvas>
-        </div>
+        <!-- Main Content Grid -->
+        <main class="main-grid">
 
-        <!-- Main Control Button -->
-        <div id="controls">
-            <button id="mainBtn" class="main-button" aria-label="Tap to capture photo and ask question">
-                <span id="btnText">Tap to Start</span>
-            </button>
-        </div>
+            <!-- Left: Camera Panel -->
+            <section class="camera-panel" aria-label="Camera Preview">
+                <div class="panel-label">
+                    <span class="live-dot"></span>
+                    <span>LIVE CAMERA</span>
+                </div>
+                <div id="cameraContainer" aria-hidden="true">
+                    <video id="camera" autoplay playsinline></video>
+                    <canvas id="canvas" style="display: none;"></canvas>
+                    <!-- Scan line overlay -->
+                    <div class="scan-overlay">
+                        <div class="scan-line"></div>
+                        <div class="corner tl"></div>
+                        <div class="corner tr"></div>
+                        <div class="corner bl"></div>
+                        <div class="corner br"></div>
+                    </div>
+                    <!-- Quality warning overlay -->
+                    <div id="qualityBadge" class="quality-badge hidden"></div>
+                </div>
+            </section>
 
-        <!-- Status Messages (announced to screen readers) -->
-        <div id="status" role="status" aria-live="polite" aria-atomic="true" class="status-message"></div>
+            <!-- Right: Controls Panel -->
+            <section class="controls-panel" aria-label="Controls">
 
-        <!-- Settings (optional) -->
-        <div id="settings" class="settings">
-            <button id="settingsBtn" aria-label="Settings" class="icon-button">
-                ⚙️
-            </button>
-        </div>
+                <!-- Status pill -->
+                <div id="statusPill" class="status-pill idle">
+                    <span id="statusIcon">●</span>
+                    <span id="statusText">Ready</span>
+                </div>
+
+                <!-- Main capture button -->
+                <div id="controls">
+                    <button id="mainBtn" class="main-button" aria-label="Tap to capture photo and ask question">
+                        <div class="btn-rings">
+                            <div class="ring ring-1"></div>
+                            <div class="ring ring-2"></div>
+                        </div>
+                        <div class="btn-inner">
+                            <div id="btnIcon" class="btn-icon">
+                                <!-- Camera icon -->
+                                <svg id="iconCamera" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                    <circle cx="12" cy="13" r="4"></circle>
+                                </svg>
+                                <!-- Mic icon (hidden by default) -->
+                                <svg id="iconMic" class="hidden" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                                </svg>
+                                <!-- Spinner (hidden by default) -->
+                                <svg id="iconSpin" class="hidden spin" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                                </svg>
+                            </div>
+                            <span id="btnText">Capture</span>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Instruction hint -->
+                <p class="hint-text" id="hintText">Tap to capture a photo, then ask your question</p>
+
+                <!-- Answer Card -->
+                <div id="answerCard" class="answer-card hidden">
+                    <div class="answer-header">
+                        <span class="answer-icon">🤖</span>
+                        <span class="answer-label">AI Answer</span>
+                        <button id="dismissAnswer" class="dismiss-btn" aria-label="Dismiss answer">✕</button>
+                    </div>
+                    <p id="answerText" class="answer-text"></p>
+                    <div id="suggestionBox" class="suggestion-box hidden">
+                        <span class="suggestion-icon">💡</span>
+                        <p id="suggestionText"></p>
+                    </div>
+                </div>
+
+                <!-- Status message (sr-only live region) -->
+                <div id="status" role="status" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+
+            </section>
+        </main>
+
     </div>
 
     <!-- Settings Modal -->
     <div id="settingsModal" class="modal" role="dialog" aria-labelledby="settingsTitle" hidden>
+        <div class="modal-backdrop"></div>
         <div class="modal-content">
-            <h2 id="settingsTitle">Settings</h2>
+            <div class="modal-header">
+                <h2 id="settingsTitle">Settings</h2>
+                <button id="closeSettings" class="modal-close" aria-label="Close settings">✕</button>
+            </div>
 
-            <label for="speechRate">Speech Speed:</label>
-            <input type="range" id="speechRate" min="0.5" max="1.5" step="0.1" value="0.9"
-                aria-label="Adjust speech speed">
+            <div class="setting-group">
+                <label for="apiUrl">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    API Server URL
+                </label>
+                <div class="input-with-status">
+                    <input type="text" id="apiUrl" value="https://sakthi04-vqa-app.hf.space" aria-label="API server URL" spellcheck="false">
+                    <div id="apiStatus" class="api-status-dot"></div>
+                </div>
+                <button id="testApi" class="test-btn">Test Connection</button>
+            </div>
 
-            <label for="apiUrl">API URL:</label>
-            <input type="text" id="apiUrl" value="https://sakthi04-vqa-app.hf.space" aria-label="API server URL">
+            <div class="setting-group">
+                <label for="speechRate">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                    Speech Speed: <span id="speechRateVal">0.9×</span>
+                </label>
+                <input type="range" id="speechRate" min="0.5" max="1.5" step="0.1" value="0.9" aria-label="Adjust speech speed">
+            </div>
 
-            <button id="closeSettings" class="button">Close</button>
+            <div class="setting-group">
+                <label>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    Image Quality Check
+                </label>
+                <div class="toggle-row">
+                    <span>Warn on poor image (still sends)</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="qualityCheck" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <label>Demo Mode</label>
+                <div class="toggle-row">
+                    <span>Use mock responses (no API needed)</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="demoMode">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
         </div>
     </div>
 

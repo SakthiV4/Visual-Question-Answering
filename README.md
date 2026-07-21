@@ -354,14 +354,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 👥 Authors
-
-**Kesavaraja M**  
-CSE with AIML, SRM Institute of Science and Technology, Tiruchirappalli  
-GitHub: [@SakthiV4](https://github.com/SakthiV4)
+## 👥 Author
 
 **Sakthi Prasath V**  
-CSE with AIML, SRM Institute of Science and Technology, Tiruchirappalli
+CSE with AIML, SRM Institute of Science and Technology, Tiruchirappalli  
+GitHub: [@SakthiV4](https://github.com/SakthiV4)
 
 ---
 
